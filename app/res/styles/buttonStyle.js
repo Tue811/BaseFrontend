@@ -3,9 +3,9 @@ export const buttonDefaultStyle = {
   color: 'white',
   hoverColor: 'white',
   focusColor: 'white',
-  background: '#3d77b4',
-  hoverBackground: '#F2c2cf',
-  focusBackground: '#3d77b4',
+  background: '#487BA6',
+  hoverBackground: '#feadb9',
+  focusBackground: '#729dcb',
   border: 'none',
   radius: '8px',
 };
