@@ -15,6 +15,7 @@ import ErrorPage from '../../res/components/ErrorPage';
 
 import GlobalStyle from '../../global-styles';
 import { normalTheme } from '../../themes/normalTheme';
+import ManagerProducts from '../ManagerProducts';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Switch>
           <Route exact path="/" component={Login} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/ManagerProducts" component={ManagerProducts} />
           <Route path="" render={() => <ErrorPage code="404" />} />
         </Switch>
         <GlobalStyle />
