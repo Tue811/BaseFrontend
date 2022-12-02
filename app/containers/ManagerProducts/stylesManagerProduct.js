@@ -2,13 +2,14 @@
  * ...
  */
 import styled from 'styled-components';
-import { Form, Input, Layout } from 'antd';
+import { Form, Input, Layout, Modal } from 'antd';
 import { max } from 'lodash/math';
 import { triggerFocus } from 'antd/es/input/Input';
 import Sider from 'antd/es/layout/Sider';
 import { icons } from 'antd/es/image/PreviewGroup';
 import { Content } from 'antd/es/layout/layout';
 import { UserOutlined } from '@ant-design/icons';
+import TextArea from 'antd/es/input/TextArea';
 import Button from '../../res/components/Button';
 import Table from '../../res/components/Table';
 
@@ -89,12 +90,12 @@ export const BodyContent = styled(Content)`
   padding: 1%;
   display: flex;
   justify-content: right;
-  margin-top: 74px;
+  margin-top: 66px;
   border-right: 2px solid #dadada;
 `;
 
 export const Contents = styled.div`
-  width: 89%;
+  width: 84%;
 `;
 
 export const InputSearch = styled(Input)`
@@ -112,6 +113,7 @@ export const Add = styled.div`
 export const BtnAdd = styled(Button)`
   width: 110px;
   font-weight: bold;
+  border-radius: 10px;
 `;
 
 export const TotalAcc = styled.p`
@@ -120,4 +122,33 @@ export const TotalAcc = styled.p`
 
 export const TableProduct = styled(Table)`
   border: none;
+`;
+
+export const InputAddName = styled(Input)`
+  border-radius: 10px;
+`;
+
+export const InputAddDes = styled(TextArea)`
+  border-radius: 10px;
+  margin: 10px 0;
+`;
+
+export const PopUpAdd = styled(Modal)`
+  .ant-modal-header {
+    background-color: #c5ced9;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .ant-modal-content {
+    border-radius: 10px;
+  }
+  .ant-modal-title {
+    font-weight: bold;
+  }
+
+  .ant-btn,
+  .ant-btn:active,
+  .ant-btn:focus {
+    border-radius: 10px;
+  }
 `;

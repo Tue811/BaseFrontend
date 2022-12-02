@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 /**
  * ...
  */
-import { Checkbox, Form, Input, Table } from 'antd';
+import { Checkbox, Form, Input, Modal, Table } from 'antd';
 import {
   BrowserRouter as Router,
   Route,
@@ -36,6 +36,7 @@ import { Breadcrumb } from 'antd';
 import { Layout, Menu } from 'antd';
 import axios from 'axios';
 
+import TextArea from 'antd/es/input/TextArea';
 import Button from '../../res/components/Button';
 import {
   Add,
@@ -50,6 +51,9 @@ import {
   Headers,
   IconUser,
   ImputSearch,
+  InputAdd,
+  InputAddDes,
+  InputAddName,
   InputLogin,
   InputPassword,
   InputSearch,
@@ -61,6 +65,7 @@ import {
   MenuOption,
   NoteLogin,
   OptionLogin,
+  PopUpAdd,
   SiteLayout,
   TableProduct,
   TilteLogin,
@@ -74,7 +79,7 @@ const { Header, Sider, Content } = Layout;
 const columns = [
   {
     title: 'STT',
-    width: '4%',
+    width: '6%',
     dataIndex: 'number',
     key: 'number',
     align: 'center',
@@ -87,20 +92,20 @@ const columns = [
   },
   {
     title: 'Mô tả',
-    dataIndex: 'des',
-    key: 'des',
+    dataIndex: 'email',
+    key: 'email',
     width: '35%',
   },
   {
     title: 'Thời gian tạo',
-    dataIndex: 'creatTime',
-    key: 'creatTime',
+    dataIndex: 'phone',
+    key: 'phone',
     width: 150,
   },
   {
     title: 'Chức năng',
-    dataIndex: 'function',
-    key: 'function',
+    dataIndex: 'userId',
+    key: 'userId',
     width: 150,
   },
 ];
@@ -108,7 +113,16 @@ const columns = [
 const ManagerProducts = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [data, setData] = useState([]);
-  const [list, setList] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const config = {
     headers: {
       Authorization:
@@ -122,14 +136,15 @@ const ManagerProducts = () => {
 
   const getList = () => {
     axios
-      .get('http://10.2.65.99:7777/api/v1/product-line', config)
+      .get('https://jsonplaceholder.typicode.com/users')
       .then(res => {
-        const listData = {
-          name: res.data.name,
-          des: res.data.description,
-          creatTime: res.data.updateAt,
-        };
-        setData(res.data);
+        const dataSource = res.data.map((el, index) => ({
+          ...el,
+          number: index + 1,
+        }));
+
+        console.log(res.data);
+        setData(dataSource);
       })
       .catch(error => {
         console.log(error);
@@ -234,7 +249,16 @@ const ManagerProducts = () => {
             />
             <Add>
               <TotalAcc>Quản lý tài khoản: 334</TotalAcc>
-              <BtnAdd>+ Thêm mới</BtnAdd>
+              <BtnAdd onClick={showModal}>+ Thêm mới</BtnAdd>
+              <PopUpAdd
+                title="Thêm mới sản phẩm"
+                open={isModalOpen}
+                onOk={handleOk}
+                onCancel={handleCancel}
+              >
+                <InputAddName placeholder="Tên sản phẩm" />
+                <InputAddDes rows={4} placeholder="Mô tả" maxLength={6} />
+              </PopUpAdd>
             </Add>
 
             <TableProduct
