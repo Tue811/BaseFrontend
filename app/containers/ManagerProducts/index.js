@@ -30,7 +30,7 @@ import {
   CreditCardOutlined,
   SoundOutlined,
   WalletOutlined,
-  SearchOutlined,
+  SearchOutlined, ClockCircleOutlined,
 } from '@ant-design/icons';
 import { Breadcrumb } from 'antd';
 import { Layout, Menu } from 'antd';
@@ -104,8 +104,8 @@ const columns = [
   },
   {
     title: 'Chức năng',
-    dataIndex: 'userId',
-    key: 'userId',
+    dataIndex: 'icon',
+    key: 'icon',
     width: 150,
   },
 ];
@@ -150,6 +150,12 @@ const ManagerProducts = () => {
         console.log(error);
       });
   };
+
+  for (let i = 0; i < data.length; i++) {
+    data.push({
+      icon: <ClockCircleOutlined />,
+    });
+  }
 
   useEffect(() => {
     getList();
