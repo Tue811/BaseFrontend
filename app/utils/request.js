@@ -23,11 +23,7 @@ function checkStatus(response) {
 }
 
 const instance = axios.create({
-  baseURL: `${
-    process.env.NODE_ENV === 'production'
-      ? window.SystemConfig.URL
-      : 'https://reqres.in/api'
-  }/Api`,
+  baseURL: `http://172.36.67.190:7777/api`,
 });
 
 instance.defaults.timeout = 25000;
@@ -55,11 +51,11 @@ instance.interceptors.response.use(
   },
 );
 
-export async function axiosGet(path, body) {
+export async function axiosGet(path) {
   if (MOCK_DATA_GET[path] && MOCK_DATA_GET[path].switch)
     return MOCK_DATA_GET[path];
   const res = await instance
-    .post(path, body)
+    .get(path)
     .then(checkStatus)
     .catch(error => {
       if (!JSON.parse(JSON.stringify(error)).response) throw error;
@@ -72,6 +68,16 @@ export async function axiosPost(path, body) {
     return MOCK_DATA_POST[path];
   const res = await instance
     .post(path, body)
+    .then(checkStatus)
+    .catch(error => {
+      if (!JSON.parse(JSON.stringify(error)).response) throw error;
+    });
+  return res;
+}
+
+export async function axiosDelete(path) {
+  const res = await instance
+    .delete(path)
     .then(checkStatus)
     .catch(error => {
       if (!JSON.parse(JSON.stringify(error)).response) throw error;

@@ -8,5 +8,7 @@ export const COOKIES = {
 
 export const REDUX_KEY = {
   app: 'app',
-  login: 'login'
+  login: 'login',
+  managerProduct: 'managerProduct',
+  managerProductLine: 'managerProductLine',
 };

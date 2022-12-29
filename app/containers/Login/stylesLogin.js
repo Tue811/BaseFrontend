@@ -48,6 +48,10 @@ export const FormLogin = styled(Form)`
   @media (max-width: 768px) {
     background-color: rgba(255, 255, 255, 0);
   }
+
+  .ant-form-item-with-help .ant-form-item-explain {
+    margin-bottom: 25px;
+  }
 `;
 
 export const InputLogin = styled(Input)`

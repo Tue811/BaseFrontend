@@ -2,8 +2,15 @@
  * ...
  */
 
-import React from 'react';
-import { Checkbox, Form, Input } from 'antd';
+import React, { useEffect } from 'react';
+import { Checkbox, Form } from 'antd';
+import { useInjectReducer } from 'utils/injectReducer';
+import { useInjectSaga } from 'utils/injectSaga';
+import { useDispatch, useSelector } from 'react-redux';
+import { REDUX_KEY, COOKIES } from 'utils/constants';
+import { access } from '@babel/core/lib/config/validation/option-assertions';
+import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import {
   ButtonLogin,
   Container,
@@ -15,21 +22,49 @@ import {
   OptionLogin,
   TilteLogin,
 } from './stylesLogin';
-import Button from '../../res/components/Button';
+
+import * as actions from './actionsLogin';
+import reducer from './reducerLogin';
+import saga from './sagaLogin';
+
+const key = REDUX_KEY.login;
 
 const Login = () => {
-  const login = () => {};
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+  const history = useHistory();
+
+  const dispatch = useDispatch();
+  const [form] = Form.useForm();
+
+  // useEffect(() => {
+  //   if (accessToken !== '') {
+  //     history.push('/ManagerProductLine');
+  //   }
+  // });
+
+  const onClickLogin = () => {
+    form.validateFields().then(() => {
+      dispatch(
+        actions.login(form.getFieldsValue(), data => {
+          Cookies.set(COOKIES.access_token, data.token);
+          history.push('/manager-product');
+        }),
+      );
+    });
+  };
 
   return (
     <Container>
       <LayoutLogin>
-        <FormLogin>
+        <FormLogin form={form}>
           <TilteLogin>Đăng nhập hệ thống quản lý sản phẩm</TilteLogin>
           <Form.Item
+            name="username"
             rules={[
               {
                 required: true,
-                message: 'Please input your username!',
+                message: 'Vui lòng nhập email hoặc số điện thoại!',
               },
             ]}
           >
@@ -37,24 +72,38 @@ const Login = () => {
           </Form.Item>
 
           <Form.Item
+            name="password"
             rules={[
               {
                 required: true,
-                message: 'Please input your password!',
+                message: 'Vui lòng nhập mật khẩu!',
               },
             ]}
           >
             <InputPassword placeholder="Mật khẩu" />
           </Form.Item>
 
-          <Form.Item valuePropName="checked">
+          <Form.Item
+            name="agreement"
+            valuePropName="checked"
+            rules={[
+              {
+                validator: (_, value) =>
+                  value
+                    ? Promise.resolve()
+                    : Promise.reject(
+                      new Error('Hãy đồng ý với điều khoản sử dụng!'),
+                    ),
+              },
+            ]}
+          >
             <Checkbox>
               Đồng ý với <NoteLogin>Điều khoản sử dụng</NoteLogin>
             </Checkbox>
           </Form.Item>
 
           <Form.Item>
-            <ButtonLogin>Đăng nhập</ButtonLogin>
+            <ButtonLogin onClick={onClickLogin}>Đăng nhập</ButtonLogin>
           </Form.Item>
           <Form.Item>
             <OptionLogin>
